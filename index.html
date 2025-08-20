@@ -79,24 +79,27 @@
 
 
     <!-- Main App Container -->
-    <div id="app-container" class="hidden h-screen">
-        <div class="flex h-full">
+    <div id="app-container" class="hidden">
+        <div class="relative min-h-screen md:flex">
+            <!-- Mobile Menu Overlay -->
+            <div id="mobile-menu-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-20 hidden md:hidden"></div>
+            
             <!-- Sidebar Navigation -->
-            <aside class="w-64 bg-white shadow-md flex-shrink-0 flex flex-col">
-                <div class="p-6 bg-blue-600 text-white text-xl font-bold">
+            <aside id="sidebar" class="bg-white text-blue-100 w-64 space-y-6 py-7 px-2 absolute inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition duration-200 ease-in-out z-30 shadow-lg md:shadow-md flex flex-col">
+                <div class="p-4 bg-blue-600 text-white text-xl font-bold rounded-lg mx-2">
                     <i class="fas fa-graduation-cap mr-2"></i> Penilaian Guru
                 </div>
                 <nav class="mt-6 flex-1">
-                    <a href="#" id="nav-siswa" class="nav-link flex items-center px-6 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600">
+                    <a href="#" id="nav-siswa" class="nav-link flex items-center px-6 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-md">
                         <i class="fas fa-users w-6"></i><span class="ml-4">Manajemen Siswa</span>
                     </a>
-                    <a href="#" id="nav-kurikulum" class="nav-link flex items-center px-6 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600">
+                    <a href="#" id="nav-kurikulum" class="nav-link flex items-center px-6 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-md">
                         <i class="fas fa-book w-6"></i><span class="ml-4">Manajemen Kurikulum</span>
                     </a>
-                    <a href="#" id="nav-nilai" class="nav-link flex items-center px-6 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600">
+                    <a href="#" id="nav-nilai" class="nav-link flex items-center px-6 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-md">
                         <i class="fas fa-edit w-6"></i><span class="ml-4">Input Nilai</span>
                     </a>
-                    <a href="#" id="nav-rekapan" class="nav-link flex items-center px-6 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600">
+                    <a href="#" id="nav-rekapan" class="nav-link flex items-center px-6 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-md">
                         <i class="fas fa-chart-bar w-6"></i><span class="ml-4">Rekapan Nilai</span>
                     </a>
                 </nav>
@@ -109,10 +112,17 @@
 
             <!-- Main Content -->
             <main class="flex-1 p-6 lg:p-10 overflow-y-auto bg-gray-50">
+                <!-- Mobile Header -->
+                <div class="md:hidden flex justify-between items-center mb-6">
+                    <button id="mobile-menu-button" class="text-gray-700">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                    <h1 class="text-xl font-bold text-blue-600">Penilaian Guru</h1>
+                </div>
                 
                 <!-- Module: Manajemen Siswa -->
                 <div id="page-siswa" class="page-content">
-                    <h1 class="text-3xl font-bold mb-6">Manajemen Siswa</h1>
+                    <h1 class="text-3xl font-bold mb-6 hidden md:block">Manajemen Siswa</h1>
                     <!-- Actions -->
                     <div class="bg-white p-4 rounded-lg shadow-sm mb-6 flex flex-wrap items-center gap-4">
                         <div class="relative flex-grow">
@@ -149,7 +159,7 @@
 
                 <!-- Module: Manajemen Kurikulum -->
                 <div id="page-kurikulum" class="page-content hidden">
-                    <h1 class="text-3xl font-bold mb-6">Manajemen Kurikulum</h1>
+                    <h1 class="text-3xl font-bold mb-6 hidden md:block">Manajemen Kurikulum</h1>
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                         <!-- Column 1: Mapel & TP -->
                         <div class="space-y-8">
@@ -202,7 +212,7 @@
 
                 <!-- Module: Input Nilai -->
                 <div id="page-nilai" class="page-content hidden">
-                    <h1 class="text-3xl font-bold mb-6">Input Nilai Siswa</h1>
+                    <h1 class="text-3xl font-bold mb-6 hidden md:block">Input Nilai Siswa</h1>
                     <div class="bg-white p-4 rounded-lg shadow-sm mb-6 flex flex-wrap items-center gap-4">
                         <select id="select-nilai-mapel" class="p-2 border rounded-md w-full sm:w-auto"></select>
                         <select id="select-nilai-kelas" class="p-2 border rounded-md w-full sm:w-auto"></select>
@@ -231,7 +241,7 @@
 
                 <!-- Module: Rekapan Nilai -->
                 <div id="page-rekapan" class="page-content hidden">
-                    <h1 class="text-3xl font-bold mb-6">Rekapan Nilai</h1>
+                    <h1 class="text-3xl font-bold mb-6 hidden md:block">Rekapan Nilai</h1>
                     <div class="bg-white p-4 rounded-lg shadow-sm mb-6 flex flex-wrap items-center gap-4">
                         <select id="select-rekapan-kelas" class="p-2 border rounded-md w-full sm:w-64"></select>
                         <button id="btn-tampilkan-rekapan" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition">Tampilkan Nilai</button>
@@ -357,6 +367,9 @@
     const appContainer = document.getElementById('app-container');
     const loginForm = document.getElementById('login-form');
     const btnLogout = document.getElementById('btn-logout');
+    const sidebar = document.getElementById('sidebar');
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
 
     const pages = document.querySelectorAll('.page-content');
     const navLinks = document.querySelectorAll('.nav-link');
@@ -425,6 +438,20 @@
             link.classList.remove('bg-blue-50', 'text-blue-600', 'font-semibold');
             if (link.id === `nav-${pageId}`) link.classList.add('bg-blue-50', 'text-blue-600', 'font-semibold');
         });
+        // Close mobile menu on navigation
+        if (window.innerWidth < 768) {
+            closeMobileMenu();
+        }
+    };
+
+    const openMobileMenu = () => {
+        sidebar.classList.remove('-translate-x-full');
+        mobileMenuOverlay.classList.remove('hidden');
+    };
+
+    const closeMobileMenu = () => {
+        sidebar.classList.add('-translate-x-full');
+        mobileMenuOverlay.classList.add('hidden');
     };
 
     // =================================================================================
@@ -829,21 +856,19 @@
     };
 
     // =================================================================================
-    // AUTHENTICATION LOGIC
+    // AUTHENTICATION & APP INITIALIZATION
     // =================================================================================
     onAuthStateChanged(auth, (user) => {
         if (user) {
-            // Pengguna sudah login
             loginScreen.classList.add('hidden');
             appContainer.classList.remove('hidden');
-            setupFirestoreListeners(); // Mulai mendengarkan data
-            initAppEventListeners(); // Pasang event listener aplikasi
+            setupFirestoreListeners();
+            initAppEventListeners();
             navigate(state.activePage || 'siswa');
         } else {
-            // Pengguna logout
             loginScreen.classList.remove('hidden');
             appContainer.classList.add('hidden');
-            detachFirestoreListeners(); // Berhenti mendengarkan data
+            detachFirestoreListeners();
         }
     });
 
@@ -853,7 +878,6 @@
         const password = document.getElementById('password').value;
         try {
             await signInWithEmailAndPassword(auth, email, password);
-            // onAuthStateChanged akan menangani sisanya
         } catch (error) {
             tampilkanNotifikasi('Email atau password salah.', 'error');
         }
@@ -863,9 +887,6 @@
         await signOut(auth);
     });
 
-    // =================================================================================
-    // INITIALIZATION
-    // =================================================================================
     const initAppEventListeners = () => {
         navLinks.forEach(link => link.addEventListener('click', (e) => { e.preventDefault(); navigate(link.id.split('-')[1]); }));
         searchSiswaInput.addEventListener('input', renderTabelSiswa);
@@ -890,6 +911,10 @@
         selectNilaiTP.addEventListener('change', renderTabelInputNilai);
         document.getElementById('btn-tampilkan-rekapan').addEventListener('click', renderTabelRekapan);
         btnExportRekapan.addEventListener('click', exportRekapanKeExcel);
+        
+        // Mobile Menu Listeners
+        mobileMenuButton.addEventListener('click', openMobileMenu);
+        mobileMenuOverlay.addEventListener('click', closeMobileMenu);
     };
 
 </script>
